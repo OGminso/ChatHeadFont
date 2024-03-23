@@ -20,7 +20,7 @@ This was only tested on version 1.20.4
 5. Click Done to apply the changes.
 
 ### Plugin Installation
-A demo which showcases the resource pack.
+Used to generate the player head icon and showcase them.
 
 1. Download the plugin JAR file from the Releases section.
 2. Place the JAR file in the plugins folder of your Minecraft server directory.
