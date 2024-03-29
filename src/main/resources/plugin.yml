@@ -1,0 +1,8 @@
+name: ChatHeadFont
+version: '${project.version}'
+main: net.minso.chathead.Main
+api-version: '1.20'
+authors: [Minso]
+description: Player Chat Icons
+website: https://minso.gg
+softdepend: [PlaceholderAPI]
