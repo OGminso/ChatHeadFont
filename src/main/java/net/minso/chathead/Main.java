@@ -16,7 +16,7 @@ public final class Main extends JavaPlugin {
             PlaceholderAPIHook.registerHook();
         }*/
 
-        registerExamples();
+        //registerExamples();
     }
 
     private void registerExamples() {

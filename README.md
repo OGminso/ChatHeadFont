@@ -1,5 +1,5 @@
 # Chat Head Font
-Minecraft resource pack and plugin for dynamic player head chat icons.
+Minecraft resource pack and API for creating dynamic player head chat icons.
 
 ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/Actionbar.png)
 ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/Chat.png)
@@ -27,17 +27,32 @@ Used to generate the player head icon and showcase them.
 3. Start or restart your Minecraft server.
 
 ## Unicode Characters
+This works by coloring a set of unicodes which are set in the Resource Pack under a custom font called "playerhead".
+It is then arranged into a grid of 8x8 of pixels using negative space.
 
-- `\uF001`: Pixel 1 (Top row)
-- `\uF002`: Pixel 2
-- `\uF003`: Pixel 3
-- `\uF004`: Pixel 4
-- `\uF005`: Pixel 5
-- `\uF006`: Pixel 6
-- `\uF007`: Pixel 7
-- `\uF008`: Pixel 8 (Bottom row)
+- `\uF001`: Pixel 1 (1st Row)
+- `\uF002`: Pixel 2 (2nd Row)
+- `\uF003`: Pixel 3 (3rd Row)
+- `\uF004`: Pixel 4 (4th Row)
+- `\uF005`: Pixel 5 (5th Row)
+- `\uF006`: Pixel 6 (6th Row)
+- `\uF007`: Pixel 7 (7th Row)
+- `\uF008`: Pixel 8 (8th Row)
 - `\uF101`: Negative space (Moves back 1px)
 - `\uF102`: Negative space (Moves back 2px)
+
+## API Usage
+Using the API class is as simple as this.
+
+``` java
+ChatHeadAPI chatHeadAPI = ChatHeadAPI.getInstance();
+```
+
+## [Examples](https://github.com/OGminso/ChatHeadFont/tree/main/src/main/java/net/minso/chathead/Examples)
+- Join & Leave messages 
+- ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/joinleave.png)
+- Actionbar
+- ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/Actionbar.png)
 
 ## License and use
 
