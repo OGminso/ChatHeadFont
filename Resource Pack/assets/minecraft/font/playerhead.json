@@ -17,7 +17,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel1.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF001"
@@ -26,7 +26,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel2.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF002"
@@ -35,7 +35,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel3.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF003"
@@ -44,7 +44,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel4.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF004"
@@ -53,7 +53,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel5.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF005"
@@ -62,7 +62,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel6.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF006"
@@ -71,7 +71,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel7.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF007"
@@ -80,7 +80,7 @@
         {
           "type": "bitmap",
           "file": "minecraft:pixel8.png",
-          "ascent": 7,
+          "ascent": 8,
           "height": 8,
           "chars": [
             "\uF008"
