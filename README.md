@@ -4,7 +4,6 @@ Minecraft resource pack and API for creating dynamic player head chat icons.
 ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/Actionbar.png)
 ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/Chat.png)
 
-
 ## Note
 This is a public resource/guide on how to add playerhead icons to the game chat. As theres not much information on how do this. I will not provide any further support for this resource unless required.
 
@@ -53,6 +52,14 @@ ChatHeadAPI chatHeadAPI = ChatHeadAPI.getInstance();
 - ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/joinleave.png)
 - Actionbar
 - ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/Actionbar.png)
+
+## TODO
+- Add more examples use cases of the API
+- Add support for placeholder api
+- Add support for bossbars, scoreboards, titles, etc.
+
+## Contribute
+Feel free to contribute to this project, I will accept most pull requests.
 
 ## License and use
 
