@@ -1,5 +1,0 @@
-name: ChatHead
-version: '${project.version}'
-main: net.minso.chathead.Main
-api-version: '1.20'
-
