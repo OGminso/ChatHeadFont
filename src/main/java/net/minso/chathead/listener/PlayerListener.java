@@ -23,10 +23,11 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.setJoinMessage("");
-        broadcastToPlayers(insertPlayerHead(event.getJoinMessage(), event.getPlayer()));
         broadcast(event.getJoinMessage(), event.getPlayer());
         event.setJoinMessage(null);
+
+        if (plugin.getServer().getResourcePack().isEmpty())
+            event.getPlayer().setResourcePack(Main.RESOURCE_PACK);
     }
 
     @EventHandler

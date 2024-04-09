@@ -8,6 +8,7 @@ import net.minso.chathead.listener.PlayerListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
+    public static final String RESOURCE_PACK = "https://github.com/codingcat2468/ChatHeadFont/raw/main/pack.zip";
 
     @Override
     public void onEnable() {
