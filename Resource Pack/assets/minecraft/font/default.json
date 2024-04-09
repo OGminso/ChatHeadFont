@@ -1,0 +1,9 @@
+{
+  "override": false,
+  "providers": [
+    {
+      "type": "reference",
+      "id": "chathead:playerhead"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ package net.minso.chathead;
 import net.minso.chathead.API.ChatHeadAPI;
 import net.minso.chathead.Examples.ActionBarExample;
 import net.minso.chathead.Examples.JoinLeaveChatExample;
+import net.minso.chathead.Hooks.PlaceholderAPIHook;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
@@ -11,10 +12,10 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         ChatHeadAPI.initialize(this);
 
-        //TODO - Fix papi support unable to send chatcomponents
-        /*if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
             PlaceholderAPIHook.registerHook();
-        }*/
+            getLogger().info("Hooked into PlaceholderAPI!");
+        }
 
         //registerExamples();
     }

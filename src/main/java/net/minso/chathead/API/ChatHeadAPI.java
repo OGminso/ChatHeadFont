@@ -135,7 +135,6 @@ public class ChatHeadAPI {
 
             // Set the color of the TextComponent based on the corresponding hexadecimal color
             component.setColor(ChatColor.of(hexColors[i]));
-            component.setFont("minecraft:playerhead"); //Sets the components font to the designated font containing the pixels.
             components[row][col] = component;
         }
 
