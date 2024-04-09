@@ -39,27 +39,20 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer offlinePlayer, @NotNull String params) {
+        ChatHeadAPI api = ChatHeadAPI.getInstance();
         if (params.equalsIgnoreCase("me")) {
             if (offlinePlayer == null || !offlinePlayer.isOnline())
                 return "This placeholder has to be used as an online player!";
             Player player = offlinePlayer.getPlayer();
             assert player != null;
 
-            return getHeadUnicodeString(player);
+            return api.getHeadAsString(player, true, SkinSource.CRAFATAR);
         }
 
         Player requestedPlayer = plugin.getServer().getPlayerExact(params);
         if (requestedPlayer == null) return "Unknown player!";
 
-        return getHeadUnicodeString(requestedPlayer);
-    }
-
-    private String getHeadUnicodeString(Player player) {
-        return TextComponent.toLegacyText(
-                ChatHeadAPI.getInstance().getHead(player.getUniqueId(),
-                        true,
-                        SkinSource.CRAFATAR)
-        );
+        return api.getHeadAsString(requestedPlayer, true, SkinSource.CRAFATAR);
     }
 
 

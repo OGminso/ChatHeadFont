@@ -154,6 +154,29 @@ public class ChatHeadAPI {
         return baseComponents; // Return the array of BaseComponents representing the players head
     }
 
+    /**
+     * Exports the BaseComponent[] from the getHead method to a String.
+     * @param uuid       The UUID of the player whose head is to be retrieved & created.
+     * @param overlay    A boolean value indicating whether to apply overlay on the players head.
+     * @param skinSource An enum specifying the source from which to retrieve the player's skin.
+     *                   Supported sources include MOJANG, MINOTAR, and CRAFATAR.
+     */
+    public String getHeadAsString(UUID uuid, boolean overlay, SkinSource skinSource) {
+        return TextComponent.toLegacyText(
+                this.getHead(uuid, overlay, skinSource)
+        );
+    }
+
+    /**
+     * Exports the BaseComponent[] from the getHead method to a String.
+     * @param player     The Player object representing the player whose head is to be retrieved.
+     * @param overlay    A boolean value indicating whether to apply overlay on the players head.
+     * @param skinSource An enum specifying the source from which to retrieve the player's skin.
+     *                   Supported sources include MOJANG, MINOTAR, and CRAFATAR.
+     */
+    public String getHeadAsString(Player player, boolean overlay, SkinSource skinSource) {
+        return getHeadAsString(player.getUniqueId(), overlay, skinSource);
+    }
 
     /**
      * Retrieves the pixel colors from the avatar image of a player hosted on Crafatar.
