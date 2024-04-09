@@ -13,7 +13,7 @@ public final class Main extends JavaPlugin {
         ChatHeadAPI.initialize(this);
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
-            PlaceholderAPIHook.registerHook();
+            PlaceholderAPIHook.registerHook(this);
             getLogger().info("Hooked into PlaceholderAPI!");
         }
 
