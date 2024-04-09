@@ -25,19 +25,21 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage("");
         broadcastToPlayers(insertPlayerHead(event.getJoinMessage(), event.getPlayer()));
+        broadcast(event.getJoinMessage(), event.getPlayer());
+        event.setJoinMessage(null);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        event.setQuitMessage("");
-        broadcastToPlayers(insertPlayerHead(event.getQuitMessage(), event.getPlayer()));
+        broadcast(event.getQuitMessage(), event.getPlayer());
+        event.setQuitMessage(null);
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        event.setFormat("");
         String msg = String.format(event.getFormat(), event.getPlayer().getName(), event.getMessage());
-        broadcastToPlayers(insertPlayerHead(msg, event.getPlayer()));
+        event.setCancelled(true);
+        broadcast(msg, event.getPlayer());
     }
 
     @EventHandler
@@ -57,8 +59,11 @@ public class PlayerListener implements Listener {
         return TextComponent.toLegacyText(msg);
     }
 
-    private void broadcastToPlayers(String msg) {
+    private void broadcast(String msg, Player player) {
+        String message = insertPlayerHead(msg, player);
         for (Player p : plugin.getServer().getOnlinePlayers())
-            p.sendMessage(msg);
+            p.sendMessage(message);
+
+        plugin.getServer().getConsoleSender().sendMessage(msg);
     }
 }
