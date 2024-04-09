@@ -1,18 +1,18 @@
 package net.minso.chathead.Hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.minso.chathead.API.ChatHeadAPI;
 import net.minso.chathead.API.SkinSource;
 import net.minso.chathead.Main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
-    private final Main plugin;
+    private final JavaPlugin plugin;
 
-    public PlaceholderAPIHook(Main plugin) {
+    public PlaceholderAPIHook(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

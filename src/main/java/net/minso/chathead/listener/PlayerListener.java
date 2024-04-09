@@ -23,21 +23,28 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        broadcast(event.getJoinMessage(), event.getPlayer());
-        event.setJoinMessage(null);
+        if (plugin.getPluginConfig().getJoinMessagesEnabled()) {
+            broadcast(event.getJoinMessage(), event.getPlayer());
+            event.setJoinMessage(null);
+        }
 
-        if (plugin.getServer().getResourcePack().isEmpty())
+        if (plugin.getPluginConfig().getAutoDownloadPackEnabled()
+                && plugin.getServer().getResourcePack().isEmpty())
             event.getPlayer().setResourcePack(Main.RESOURCE_PACK);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        if (!plugin.getPluginConfig().getLeaveMessagesEnabled()) return;
+
         broadcast(event.getQuitMessage(), event.getPlayer());
         event.setQuitMessage(null);
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (!plugin.getPluginConfig().getChatMessagesEnabled()) return;
+
         String msg = String.format(event.getFormat(), event.getPlayer().getName(), event.getMessage());
         event.setCancelled(true);
         broadcast(msg, event.getPlayer());
@@ -45,6 +52,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
+        if (!plugin.getPluginConfig().getDeathMessagesEnabled()) return;
+
         event.setDeathMessage(insertPlayerHead(event.getDeathMessage(), event.getEntity()));
     }
 
