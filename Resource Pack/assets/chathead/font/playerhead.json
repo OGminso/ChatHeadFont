@@ -1,0 +1,90 @@
+{
+    "providers": [
+        {
+          "type": "space",
+          "advances": {
+            "\uF101": -1,
+            "\uF102": -2,
+            "\uF103": -3,
+            "\uF104": -4,
+            "\uF105": -5,
+            "\uF106": -6,
+            "\uF107": -7,
+            "\uF108": -8,
+            "\uF109": -9
+          }
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel1.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF001"
+          ]
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel2.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF002"
+          ]
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel3.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF003"
+          ]
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel4.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF004"
+          ]
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel5.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF005"
+          ]
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel6.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF006"
+          ]
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel7.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF007"
+          ]
+        },
+        {
+          "type": "bitmap",
+          "file": "chathead:pixel8.png",
+          "ascent": 8,
+          "height": 8,
+          "chars": [
+            "\uF008"
+          ]
+        }
+    ]
+}

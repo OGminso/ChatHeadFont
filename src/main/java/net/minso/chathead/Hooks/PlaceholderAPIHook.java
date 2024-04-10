@@ -1,14 +1,21 @@
 package net.minso.chathead.Hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.minso.chathead.API.ChatHeadAPI;
 import net.minso.chathead.API.SkinSource;
+import net.minso.chathead.Main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
+    private final JavaPlugin plugin;
+
+    public PlaceholderAPIHook(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public @NotNull String getIdentifier() {
         return "chathead";
@@ -16,12 +23,12 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "Minso";
+        return String.join(", ", plugin.getDescription().getAuthors());
     }
 
     @Override
     public @NotNull String getVersion() {
-        return "0.0.2";
+        return plugin.getDescription().getVersion();
     }
 
 
@@ -32,18 +39,24 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer offlinePlayer, @NotNull String params) {
-        if (offlinePlayer != null && offlinePlayer.isOnline()) {
+        ChatHeadAPI api = ChatHeadAPI.getInstance();
+        if (params.equalsIgnoreCase("me")) {
+            if (offlinePlayer == null || !offlinePlayer.isOnline())
+                return "This placeholder has to be used as an online player!";
             Player player = offlinePlayer.getPlayer();
+            assert player != null;
 
-            if (params.equalsIgnoreCase("player")) {
-                return TextComponent.toLegacyText(ChatHeadAPI.getInstance().getHead(player.getUniqueId(), true, SkinSource.CRAFATAR));
-            }
+            return api.getHeadAsString(player, true, SkinSource.CRAFATAR);
         }
 
-        return null;
+        Player requestedPlayer = plugin.getServer().getPlayerExact(params);
+        if (requestedPlayer == null) return "Unknown player!";
+
+        return api.getHeadAsString(requestedPlayer, true, SkinSource.CRAFATAR);
     }
 
-    public static void registerHook() {
-        new PlaceholderAPIHook().register();
+
+    public static void registerHook(Main plugin) {
+        new PlaceholderAPIHook(plugin).register();
     }
 }
