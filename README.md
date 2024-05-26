@@ -66,6 +66,33 @@ Using the API class is as simple as this.
 ChatHeadAPI chatHeadAPI = ChatHeadAPI.getInstance();
 ```
 
+``` java
+//get player head as String
+chatHeadAPI.getHeadAsString(OfflinePlayer player, boolean overlay, SkinSource skinSource);
+```
+
+``` java
+//get player head as BaseComponent[]
+chatHeadAPI.getHead(OfflinePlayer player, boolean overlay, SkinSource skinSource)
+```
+
+``` java
+//to select the SkinSource, use the default one, update it or pass to methods one of your choice
+chatHeadAPI.defaultSource= new MojangSource();
+
+//or
+chatHeadAPI.getHead(OfflinePlayer player, boolean overlay, new MojangSource())
+```
+
+### Offline servers
+
+Use player names instead of UUID.
+Set the first parameter to false:
+
+``` java
+new MojangSource(false);
+```
+
 ## [Examples](https://github.com/OGminso/ChatHeadFont/tree/main/src/main/java/net/minso/chathead/Examples)
 - Join & Leave messages 
 - ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/joinleave.png)
