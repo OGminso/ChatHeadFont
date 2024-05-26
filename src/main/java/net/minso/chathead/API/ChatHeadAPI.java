@@ -5,7 +5,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.minso.chathead.API.impl.MojangSource;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
@@ -84,6 +83,14 @@ public class ChatHeadAPI {
         return skinSource.getHead(player, overlay);
     }
 
+    public BaseComponent[] getHead(OfflinePlayer player, boolean overlay) {
+        return defaultSource.getHead(player, overlay);
+    }
+
+    public BaseComponent[] getHead(OfflinePlayer player) {
+        return defaultSource.getHead(player, true);
+    }
+
     /**
      * Exports the BaseComponent[] from the getHead method to a String.
      *
@@ -93,9 +100,7 @@ public class ChatHeadAPI {
      *                   Supported sources include MOJANG, MINOTAR, and CRAFATAR.
      */
     public String getHeadAsString(UUID uuid, boolean overlay, SkinSource skinSource) {
-        return TextComponent.toLegacyText(
-                this.getHead(uuid, overlay, skinSource)
-        );
+        return getHeadAsString(Bukkit.getOfflinePlayer(uuid), true, defaultSource);
     }
 
     /**
@@ -106,14 +111,14 @@ public class ChatHeadAPI {
      * @param skinSource An enum specifying the source from which to retrieve the player's skin.
      *                   Supported sources include MOJANG, MINOTAR, and CRAFATAR.
      */
-    public String getHeadAsString(Player player, boolean overlay, SkinSource skinSource) {
-        return getHeadAsString(player.getUniqueId(), overlay, skinSource);
-    }
-
     public String getHeadAsString(OfflinePlayer player, boolean overlay, SkinSource skinSource) {
         return TextComponent.toLegacyText(
                 this.getHead(player, overlay, skinSource)
         );
+    }
+
+    public String getHeadAsString(OfflinePlayer player) {
+        return getHeadAsString(player, true, defaultSource);
     }
 
 }
