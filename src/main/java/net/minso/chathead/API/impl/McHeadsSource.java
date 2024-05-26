@@ -38,7 +38,6 @@ public class McHeadsSource extends SkinSource {
             String url = "https://mc-heads.net/avatar/" + nameOrUUID + "/8"; // URL for fetching the players image from Crafatar
             if (!overlay) url += "/nohelm";  // Append overlay parameter to the URL if overlay effects are requested
 
-            System.out.println("Requesting.... " + url);
             BufferedImage skinImage = ImageIO.read(new URL(url)); // Read the avatar image from the constructed URL
             int faceWidth = 8, faceHeight = 8; // Define dimensions of the face (8x8)
 

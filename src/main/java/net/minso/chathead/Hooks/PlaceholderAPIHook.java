@@ -42,7 +42,6 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer offlinePlayer, @NotNull String params) {
-        System.out.println(offlinePlayer.getPlayer()+ "  "+ params);
         ChatHeadAPI api = ChatHeadAPI.getInstance();
         if (params.equalsIgnoreCase("me")) {
             if (offlinePlayer == null || !offlinePlayer.isOnline())
