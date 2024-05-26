@@ -39,7 +39,7 @@ public abstract class SkinSource {
 
     /**
      * Create a new SkinSource.
-     * Put {@code useUUIDWhenRetrieve} to {@code false}.
+     * Put {@code useUUIDWhenRetrieve} to {@code true}.
      *
      * @param skinSource The SkinSource.
      * @param hasUsernameSupport If it has the support of requesting the player's head by name.
@@ -47,7 +47,7 @@ public abstract class SkinSource {
     public SkinSource(SkinSourceEnum skinSource, boolean hasUsernameSupport) {
         this.skinSource = skinSource;
         this.hasUsernameSupport = hasUsernameSupport;
-        this.useUUIDWhenRetrieve = false;
+        this.useUUIDWhenRetrieve = true;
     }
 
 
