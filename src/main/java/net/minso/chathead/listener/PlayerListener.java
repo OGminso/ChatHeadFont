@@ -1,10 +1,10 @@
 package net.minso.chathead.listener;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.minso.chathead.API.ChatHeadAPI;
-import net.minso.chathead.API.SkinSource;
 import net.minso.chathead.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,6 +33,7 @@ public class PlayerListener implements Listener {
             event.getPlayer().setResourcePack(Main.RESOURCE_PACK);
     }
 
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (!plugin.getPluginConfig().getLeaveMessagesEnabled()) return;
@@ -59,7 +60,7 @@ public class PlayerListener implements Listener {
 
     private String insertPlayerHead(String message, Player player) {
         ChatHeadAPI api = ChatHeadAPI.getInstance();
-        BaseComponent[] head = api.getHead(player, true, SkinSource.CRAFATAR);
+        BaseComponent[] head = api.getHead(player, true, ChatHeadAPI.defaultSource);
         BaseComponent[] msg = new ComponentBuilder()
                 .append(head)
                 .append(" ")

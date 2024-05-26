@@ -28,7 +28,7 @@ public class ActionBarExample implements Listener {
         ChatHeadAPI chatHeadAPI = ChatHeadAPI.getInstance();
 
         // Get the BaseComponent array representing the players head with overlay from the specified skin source
-        BaseComponent[] component = chatHeadAPI.getHead(player, true, SkinSource.CRAFATAR);
+        BaseComponent[] component = chatHeadAPI.getHead(player, true, ChatHeadAPI.defaultSource);
 
         // Send the players head as an action bar message
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR ,component);

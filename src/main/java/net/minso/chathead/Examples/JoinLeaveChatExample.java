@@ -27,9 +27,8 @@ public class JoinLeaveChatExample implements Listener {
 
         // Retrieve the ChatHeadAPI instance
         ChatHeadAPI chatHeadAPI = ChatHeadAPI.getInstance();
-
         // Get the BaseComponent array representing the players head with overlay from the specified skin source
-        BaseComponent[] head = chatHeadAPI.getHead(player, true, SkinSource.CRAFATAR);
+        BaseComponent[] head = chatHeadAPI.getHead(player, true, ChatHeadAPI.defaultSource);
         TextComponent msg = new TextComponent(ChatColor.YELLOW + " " + player.getName() + " joined the game");
         BaseComponent[] joinMsg = new ComponentBuilder().append(head).append(msg).create();
 
@@ -49,7 +48,7 @@ public class JoinLeaveChatExample implements Listener {
         ChatHeadAPI chatHeadAPI = ChatHeadAPI.getInstance();
 
         // Get the BaseComponent array representing the players head with overlay from the specified skin source
-        BaseComponent[] head = chatHeadAPI.getHead(player, true, SkinSource.CRAFATAR);
+        BaseComponent[] head = chatHeadAPI.getHead(player, true, ChatHeadAPI.defaultSource);
         TextComponent msg = new TextComponent(ChatColor.YELLOW + " " + player.getName() + " left the game");
         BaseComponent[] joinMsg = new ComponentBuilder().append(head).append(msg).create();
 
