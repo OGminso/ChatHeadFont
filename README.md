@@ -1,4 +1,4 @@
-# Chat Head Font
+# Chat Head Font v0.0.4
 Minecraft resource pack and API for creating dynamic player head chat icons.
 
 ![Alt Text](https://raw.githubusercontent.com/OGminso/ChatHeadFont/main/Actionbar.png)
