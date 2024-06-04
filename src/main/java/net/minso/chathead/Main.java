@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class Main extends JavaPlugin {
-    public static final String RESOURCE_PACK = "https://github.com/codingcat2468/ChatHeadFont/raw/main/pack.zip";
+    public static final String RESOURCE_PACK = "https://github.com/OGminso/ChatHeadFont/raw/main/pack.zip";
     private Config config;
 
     @Override

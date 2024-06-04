@@ -34,10 +34,12 @@ Used to generate the player head icon and showcase them.
 3. Start or restart your Minecraft server.
 
 ### Configuration
-You can configure which messages will appear with a player head in front of them in the `config.yml`
+You can configure which messages will appear with a player head in front of them, or other config options in the `config.yml`
 file of the plugin:
 ```yml
 auto-download-pack: true # Whether the pack will automatically be downloaded and applied for every player
+online-mode: true # Leave if server is in online mode. Set to false if server in offline mode.
+enable-skin-overlay: true # Whether to display the player head with its hat overlay on?
 enable-join-messages: true # Should join messages appear with a player head?
 enable-leave-messages: true # Should leave messages appear with a player head?
 enable-chat-messages: true # Should chat messages sent by players appear with a player head?
@@ -73,7 +75,7 @@ chatHeadAPI.getHeadAsString(OfflinePlayer player, boolean overlay, SkinSource sk
 
 ``` java
 //get player head as BaseComponent[]
-chatHeadAPI.getHead(OfflinePlayer player, boolean overlay, SkinSource skinSource)
+chatHeadAPI.getHead(OfflinePlayer player, boolean overlay, SkinSource skinSource);
 ```
 
 ``` java
@@ -81,7 +83,7 @@ chatHeadAPI.getHead(OfflinePlayer player, boolean overlay, SkinSource skinSource
 chatHeadAPI.defaultSource= new MojangSource();
 
 //or
-chatHeadAPI.getHead(OfflinePlayer player, boolean overlay, new MojangSource())
+chatHeadAPI.getHead(OfflinePlayer player, boolean overlay, new MojangSource());
 ```
 
 ### Offline servers
