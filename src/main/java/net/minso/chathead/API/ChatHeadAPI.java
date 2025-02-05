@@ -2,6 +2,9 @@ package net.minso.chathead.API;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.minso.chathead.API.impl.CrafatarSource;
+import net.minso.chathead.API.impl.McHeadsSource;
+import net.minso.chathead.API.impl.MinotarSource;
 import net.minso.chathead.API.impl.MojangSource;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -9,38 +12,51 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
-
 /**
- * A class for retrieving player head representations as BaseComponents.
- * The head representation is generated based on the players UUID and skin source.
+ * The {@code ChatHeadAPI} class provides methods to retrieve a Minecraft player's head representation
+ * as an array of {@link BaseComponent} objects forming an 8x8 grid of pixels. Each pixel is represented
+ * by a {@link BaseComponent} that contains a hexadecimal color code.
+ * <p>
+ * The default skin source is determined from the plugin's configuration using the key "skin-source"
+ * (case-insensitive), which defaults to "MOJANG" if not specified.
+ * </p>
+ * <p>
+ * Example usage:
+ * <pre>
+ *     ChatHeadAPI.initialize(plugin);
+ *     BaseComponent[] headComponents = ChatHeadAPI.getInstance().getHead(playerUUID);
+ * </pre>
+ * </p>
  *
  * @author Minso
  */
 public class ChatHeadAPI {
 
     /**
-     * The default SkinSource used in the code of this plugin.
+     * The default {@link SkinSource} used by this API, as determined during initialization.
      */
-    public static SkinSource defaultSource = new MojangSource();
+    public static SkinSource defaultSource;
 
     private static ChatHeadAPI instance;
 
     private final JavaPlugin plugin;
+    private final HeadCache headCache;
 
     /**
-     * Constructs a new ChatHeadAPI instance.
+     * Constructs a new {@code ChatHeadAPI} instance.
      *
-     * @param plugin The JavaPlugin instance associated with the ChatHeadAPI.
+     * @param plugin the {@link JavaPlugin} instance associated with this API.
      */
     public ChatHeadAPI(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.headCache = new HeadCache(plugin);
     }
 
     /**
-     * Retrieves the singleton instance of the ChatHeadAPI.
+     * Retrieves the singleton instance of the {@code ChatHeadAPI}.
      *
-     * @return The singleton instance of ChatHeadAPI.
-     * @throws IllegalArgumentException If ChatHeadAPI has not been initialized.
+     * @return the singleton instance of {@code ChatHeadAPI}.
+     * @throws IllegalArgumentException if {@code ChatHeadAPI} has not been initialized via {@link #initialize(JavaPlugin)}.
      */
     public static ChatHeadAPI getInstance() {
         if (instance == null) {
@@ -50,66 +66,145 @@ public class ChatHeadAPI {
     }
 
     /**
-     * Initializes the ChatHeadAPI with the provided JavaPlugin instance.
+     * Initializes the {@code ChatHeadAPI} with the provided {@link JavaPlugin} instance.
+     * <p>
+     * This method reads the "skin-source" configuration from the plugin's configuration file,
+     * sets the default skin source accordingly, and creates the singleton instance. If the API is
+     * already initialized, an {@link IllegalStateException} is thrown.
+     * </p>
      *
-     * @param plugin The JavaPlugin instance to associate with the ChatHeadAPI.
-     * @throws IllegalStateException If ChatHeadAPI has already been initialized.
+     * @param plugin the {@link JavaPlugin} instance to associate with the {@code ChatHeadAPI}.
+     * @throws IllegalStateException if {@code ChatHeadAPI} has already been initialized.
      */
     public static void initialize(JavaPlugin plugin) {
         if (instance != null) {
             throw new IllegalStateException("PlayerHeadAPI has already been initialized.");
         }
+
+        String skinSourceConfig = plugin.getConfig().getString("skin-source", "MOJANG");
+        defaultSource = switch (skinSourceConfig.toUpperCase()) {
+            case "CRAFATAR" -> new CrafatarSource();
+            case "MINOTAR" -> new MinotarSource();
+            case "MCHEADS" -> new McHeadsSource();
+            default -> new MojangSource();
+        };
+
         instance = new ChatHeadAPI(plugin);
     }
 
+    /**
+     * Retrieves an 8x8 pixel head representation for the player identified by the specified UUID.
+     * <p>
+     * The resulting array of {@link BaseComponent} objects represents the player's head,
+     * with each component corresponding to a pixel's hexadecimal color value. This method applies
+     * the skin overlay by default and uses the default skin source.
+     * </p>
+     *
+     * @param uuid the UUID of the player whose head is to be retrieved.
+     * @return an array of {@link BaseComponent} objects representing the player's head.
+     */
+    public BaseComponent[] getHead(UUID uuid) {
+        return headCache.getCachedHead(uuid, true, defaultSource);
+    }
 
     /**
-     * Creates a 8x8 grid of pixels representing a Minecraft player's head.
-     * Each pixel in the grid is represented by a TextComponent with a specified hexadecimal color.
+     * Retrieves an 8x8 pixel head representation for the player identified by the specified UUID,
+     * allowing control over whether the skin overlay is applied.
+     * <p>
+     * This method uses the default skin source.
+     * </p>
      *
-     * @param uuid       The UUID of the player whose head is to be retrieved & created.
-     * @param overlay    A boolean value indicating whether to apply overlay on the players head.
-     * @param skinSource An enum specifying the source from which to retrieve the player's skin.
-     *                   Supported sources include MOJANG, MINOTAR, and CRAFATAR.
-     * @return An array of BaseComponents representing the player's head.
-     * Each BaseComponent represents a single pixel, forming a 8x8 grid of pixels.
+     * @param uuid    the UUID of the player whose head is to be retrieved.
+     * @param overlay {@code true} to apply the skin overlay; {@code false} otherwise.
+     * @return an array of {@link BaseComponent} objects representing the player's head.
+     */
+    public BaseComponent[] getHead(UUID uuid, boolean overlay) {
+        return headCache.getCachedHead(uuid, overlay, defaultSource);
+    }
+
+    /**
+     * Retrieves an 8x8 pixel head representation for the player identified by the specified UUID,
+     * allowing specification of both the overlay option and the skin source.
+     *
+     * @param uuid       the UUID of the player whose head is to be retrieved.
+     * @param overlay    {@code true} to apply the skin overlay; {@code false} otherwise.
+     * @param skinSource the {@link SkinSource} to use for retrieving the player's skin.
+     * @return an array of {@link BaseComponent} objects representing the player's head.
      */
     public BaseComponent[] getHead(UUID uuid, boolean overlay, SkinSource skinSource) {
-        return skinSource.getHead(Bukkit.getOfflinePlayer(uuid), overlay);
-
-    }
-
-    public BaseComponent[] getHead(OfflinePlayer player, boolean overlay, SkinSource skinSource) {
-        return skinSource.getHead(player, overlay);
-    }
-
-    public BaseComponent[] getHead(OfflinePlayer player, boolean overlay) {
-        return defaultSource.getHead(player, overlay);
-    }
-
-    public BaseComponent[] getHead(OfflinePlayer player) {
-        return defaultSource.getHead(player, true);
+        return headCache.getCachedHead(uuid, overlay, skinSource);
     }
 
     /**
-     * Exports the BaseComponent[] from the getHead method to a String.
+     * Retrieves an 8x8 pixel head representation for the specified {@link OfflinePlayer}.
+     * <p>
+     * This method applies the skin overlay by default and uses the default skin source.
+     * </p>
      *
-     * @param uuid       The UUID of the player whose head is to be retrieved & created.
-     * @param overlay    A boolean value indicating whether to apply overlay on the players head.
-     * @param skinSource An enum specifying the source from which to retrieve the player's skin.
-     *                   Supported sources include MOJANG, MINOTAR, and CRAFATAR.
+     * @param player the {@link OfflinePlayer} whose head is to be retrieved.
+     * @return an array of {@link BaseComponent} objects representing the player's head.
+     */
+    public BaseComponent[] getHead(OfflinePlayer player) {
+        return headCache.getCachedHead(player, true, defaultSource);
+    }
+
+    /**
+     * Retrieves an 8x8 pixel head representation for the specified {@link OfflinePlayer},
+     * allowing control over whether the skin overlay is applied.
+     * <p>
+     * This method uses the default skin source.
+     * </p>
+     *
+     * @param player  the {@link OfflinePlayer} whose head is to be retrieved.
+     * @param overlay {@code true} to apply the skin overlay; {@code false} otherwise.
+     * @return an array of {@link BaseComponent} objects representing the player's head.
+     */
+    public BaseComponent[] getHead(OfflinePlayer player, boolean overlay) {
+        return headCache.getCachedHead(player, overlay, defaultSource);
+    }
+
+    /**
+     * Retrieves an 8x8 pixel head representation for the specified {@link OfflinePlayer},
+     * allowing specification of both the overlay option and the skin source.
+     *
+     * @param player     the {@link OfflinePlayer} whose head is to be retrieved.
+     * @param overlay    {@code true} to apply the skin overlay; {@code false} otherwise.
+     * @param skinSource the {@link SkinSource} to use for retrieving the player's skin.
+     * @return an array of {@link BaseComponent} objects representing the player's head.
+     */
+    public BaseComponent[] getHead(OfflinePlayer player, boolean overlay, SkinSource skinSource) {
+        return headCache.getCachedHead(player, overlay, skinSource);
+    }
+
+    /**
+     * Retrieves the player's head as a legacy-formatted string using the specified UUID.
+     * <p>
+     * This method converts the 8x8 grid of {@link BaseComponent} objects into a legacy text format
+     * using {@link TextComponent#toLegacyText(BaseComponent[])}.
+     * <strong>Note:</strong> Although this method accepts parameters for overlay and skin source,
+     * it always applies the skin overlay and uses the default skin source.
+     * </p>
+     *
+     * @param uuid       the UUID of the player whose head is to be retrieved.
+     * @param overlay    an unused parameter; the head is always generated with the overlay applied.
+     * @param skinSource an unused parameter; the default skin source is always used.
+     * @return a legacy-formatted string representing the player's head.
      */
     public String getHeadAsString(UUID uuid, boolean overlay, SkinSource skinSource) {
         return getHeadAsString(Bukkit.getOfflinePlayer(uuid), true, defaultSource);
     }
 
     /**
-     * Exports the BaseComponent[] from the getHead method to a String.
+     * Retrieves the player's head as a legacy-formatted string using the specified {@link OfflinePlayer}.
+     * <p>
+     * This method converts the 8x8 grid of {@link BaseComponent} objects into a legacy text format
+     * using {@link TextComponent#toLegacyText(BaseComponent[])}.
+     * </p>
      *
-     * @param player     The Player object representing the player whose head is to be retrieved.
-     * @param overlay    A boolean value indicating whether to apply overlay on the players head.
-     * @param skinSource An enum specifying the source from which to retrieve the player's skin.
-     *                   Supported sources include MOJANG, MINOTAR, and CRAFATAR.
+     * @param player     the {@link OfflinePlayer} whose head is to be retrieved.
+     * @param overlay    {@code true} to apply the skin overlay; {@code false} otherwise.
+     * @param skinSource the {@link SkinSource} to use for retrieving the player's skin.
+     * @return a legacy-formatted string representing the player's head.
      */
     public String getHeadAsString(OfflinePlayer player, boolean overlay, SkinSource skinSource) {
         return TextComponent.toLegacyText(
@@ -117,8 +212,18 @@ public class ChatHeadAPI {
         );
     }
 
+    /**
+     * Retrieves the player's head as a legacy-formatted string using the specified {@link OfflinePlayer}.
+     * <p>
+     * This method applies the skin overlay and uses the default skin source before converting
+     * the 8x8 grid of {@link BaseComponent} objects into a legacy text format via
+     * {@link TextComponent#toLegacyText(BaseComponent[])}.
+     * </p>
+     *
+     * @param player the {@link OfflinePlayer} whose head is to be retrieved.
+     * @return a legacy-formatted string representing the player's head.
+     */
     public String getHeadAsString(OfflinePlayer player) {
         return getHeadAsString(player, true, defaultSource);
     }
-
 }

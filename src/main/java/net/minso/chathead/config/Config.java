@@ -10,6 +10,10 @@ public class Config {
         this.plugin = plugin;
     }
 
+    public String getSkinSource() {
+        return plugin.getConfig().getString("skin-source", "MOJANG");
+    }
+
     public boolean getAutoDownloadPackEnabled() {
         return plugin.getConfig().getBoolean("auto-download-pack", true);
     }
@@ -38,10 +42,14 @@ public class Config {
         return plugin.getConfig().getBoolean("enable-death-messages", true);
     }
 
+    public int getJoinMessagesDelaySeconds() {
+        return plugin.getConfig().getInt("join-messages-delay-seconds", 3);
+    }
 
     public void init() {
         FileConfiguration config = plugin.getConfig();
         //default configuration:
+        config.addDefault("skin-source", "MOJANG");
         config.addDefault("auto-download-pack", true);
         config.addDefault("online-mode", true);
         config.addDefault("enable-skin-overlay", true);
@@ -49,6 +57,7 @@ public class Config {
         config.addDefault("enable-leave-messages", true);
         config.addDefault("enable-chat-messages", true);
         config.addDefault("enable-death-messages", true);
+        config.addDefault("join-messages-delay-seconds", 3);
 
         config.options().copyDefaults(true);
         plugin.saveConfig();

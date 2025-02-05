@@ -40,7 +40,7 @@ public class PlayerListener implements Listener {
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
                 broadcast(joinMessage, event.getPlayer());
-            }, 60L); //Send message 3seconds later to fix issue with texture messing up while loading the texture pack.
+            }, 20 * plugin.getPluginConfig().getJoinMessagesDelaySeconds()); //Send message 3seconds later to fix issue with texture messing up while loading the texture pack.
         }
     }
 
@@ -70,15 +70,22 @@ public class PlayerListener implements Listener {
     }
 
     private String insertPlayerHead(String message, Player player) {
-        SkinSource skinSource = plugin.getPluginConfig().getServerOnlineMode() ? ChatHeadAPI.defaultSource : new MojangSource(false);
+        SkinSource skinSource = plugin.getPluginConfig().getServerOnlineMode()
+                ? ChatHeadAPI.defaultSource
+                : new MojangSource(false);
 
         ChatHeadAPI api = ChatHeadAPI.getInstance();
         BaseComponent[] head = api.getHead(player, plugin.getPluginConfig().getSkinOverlayEnabled(), skinSource);
-        BaseComponent[] msg = new ComponentBuilder()
-                .append(head)
-                .append(" ")
-                .append(message, ComponentBuilder.FormatRetention.NONE)
-                .create();
+
+        ComponentBuilder builder = new ComponentBuilder();
+
+        if (head != null && head.length > 0) {
+            builder.append(head);
+            builder.append(" ");
+        }
+
+        builder.append(message, ComponentBuilder.FormatRetention.NONE);
+        BaseComponent[] msg = builder.create();
 
         return TextComponent.toLegacyText(msg);
     }

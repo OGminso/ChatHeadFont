@@ -43,16 +43,26 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer offlinePlayer, @NotNull String params) {
         ChatHeadAPI api = ChatHeadAPI.getInstance();
-        if (params.equalsIgnoreCase("me")) {
-            if (offlinePlayer == null || !offlinePlayer.isOnline())
-                return "This placeholder has to be used as an online player!";
-            Player player = offlinePlayer.getPlayer();
-            assert player != null;
+
+        // %chathead% or %chathead_self% - Returns the head of the player who requested the placeholder.
+        if (params.isEmpty() || params.equalsIgnoreCase("self")) {
+            if (offlinePlayer == null) return "No player found!";
+            Player player = Bukkit.getPlayer(offlinePlayer.getUniqueId());
+            if (player == null) return "You must be online!";
 
             return api.getHeadAsString(player, true, ChatHeadAPI.defaultSource);
         }
 
-        return api.getHeadAsString(Bukkit.getOfflinePlayer(params) , true, ChatHeadAPI.defaultSource);
+        // %chathead_other_<player>% - Returns the head of the specified player.
+        if (params.startsWith("other:")) {
+            String targetName = params.substring(6);
+            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(targetName);
+            if (targetPlayer == null) return "Player not found!";
+
+            return api.getHeadAsString(targetPlayer, true, ChatHeadAPI.defaultSource);
+        }
+
+        return "Invalid placeholder!";
     }
 
 

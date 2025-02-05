@@ -73,7 +73,7 @@ public abstract class SkinSource {
         // Check if the retrieved colors array is valid (has at least 64 elements)
         if (hexColors == null || hexColors.length < 64) {
             throw new IllegalArgumentException("Hex colors must have at least 64 elements.");
-        } //TODO add error handling
+        }
 
         // Initialize a 2D array to store TextComponents representing each pixel of the players head
         TextComponent[][] components = new TextComponent[8][8];
@@ -135,27 +135,39 @@ public abstract class SkinSource {
         try {
             BufferedImage skinImage = ImageIO.read(new URL(playerSkinUrl));
 
+            // If the skin image is less than 64 pixels in height, it’s an old skin without overlays.
+            if (skinImage.getHeight() < 64) {
+                overlay = false;
+            }
+
             int faceStartX = 8, faceStartY = 8;
             int faceWidth = 8, faceHeight = 8;
+            int overlayStartX = 40, overlayStartY = 8;
 
-            int overlayStartX = 40;
-            int overlayStartY = 8;
-
+            // Extract the face region.
             BufferedImage faceImage = skinImage.getSubimage(faceStartX, faceStartY, faceWidth, faceHeight);
-            BufferedImage overlayImage = skinImage.getSubimage(overlayStartX, overlayStartY, faceWidth, faceHeight);
+
+            // Only extract the overlay if it's enabled and the skin supports it.
+            BufferedImage overlayImage = null;
+            if (overlay) {
+                overlayImage = skinImage.getSubimage(overlayStartX, overlayStartY, faceWidth, faceHeight);
+            }
 
             int index = 0;
             for (int x = 0; x < faceHeight; x++) {
                 for (int y = 0; y < faceWidth; y++) {
                     int rgbFace = faceImage.getRGB(x, y);
-                    int rgbOverlay = overlayImage.getRGB(x, y);
-
-                    // Check if the overlay pixel is not transparent
-                    if ((rgbOverlay >> 24) != 0x00 && overlay) {
-                        colors[index++] = String.format("#%06X", (rgbOverlay & 0xFFFFFF)); // Use overlay color
-                    } else {
-                        colors[index++] = String.format("#%06X", (rgbFace & 0xFFFFFF)); // Use face color
+                    // If overlay is enabled, check the corresponding overlay pixel.
+                    if (overlay && overlayImage != null) {
+                        int rgbOverlay = overlayImage.getRGB(x, y);
+                        // If the overlay pixel is not fully transparent, use it.
+                        if ((rgbOverlay >> 24) != 0x00) {
+                            colors[index++] = String.format("#%06X", (rgbOverlay & 0xFFFFFF));
+                            continue;
+                        }
                     }
+                    // Otherwise, use the face pixel.
+                    colors[index++] = String.format("#%06X", (rgbFace & 0xFFFFFF));
                 }
             }
         } catch (IOException e) {

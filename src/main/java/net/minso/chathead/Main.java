@@ -2,6 +2,7 @@ package net.minso.chathead;
 
 import net.minso.chathead.API.ChatHeadAPI;
 import net.minso.chathead.Examples.ActionBarExample;
+import net.minso.chathead.Examples.BossbarExample;
 import net.minso.chathead.Examples.JoinLeaveChatExample;
 import net.minso.chathead.Hooks.PlaceholderAPIHook;
 import net.minso.chathead.config.Config;
@@ -32,6 +33,7 @@ public final class Main extends JavaPlugin {
     private void registerExamples() {
         getServer().getPluginManager().registerEvents(new ActionBarExample(), this);
         getServer().getPluginManager().registerEvents(new JoinLeaveChatExample(), this);
+        getServer().getPluginManager().registerEvents(new BossbarExample(), this);
     }
 
     private void registerListeners() {
