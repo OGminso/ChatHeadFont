@@ -6,9 +6,9 @@ import net.minso.chathead.API.impl.CrafatarSource;
 import net.minso.chathead.API.impl.McHeadsSource;
 import net.minso.chathead.API.impl.MinotarSource;
 import net.minso.chathead.API.impl.MojangSource;
+import net.minso.chathead.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
@@ -39,15 +39,15 @@ public class ChatHeadAPI {
 
     private static ChatHeadAPI instance;
 
-    private final JavaPlugin plugin;
+    private final Main plugin;
     private final HeadCache headCache;
 
     /**
      * Constructs a new {@code ChatHeadAPI} instance.
      *
-     * @param plugin the {@link JavaPlugin} instance associated with this API.
+     * @param plugin the {@link Main} instance associated with this API.
      */
-    public ChatHeadAPI(JavaPlugin plugin) {
+    public ChatHeadAPI(Main plugin) {
         this.plugin = plugin;
         this.headCache = new HeadCache(plugin);
     }
@@ -56,7 +56,7 @@ public class ChatHeadAPI {
      * Retrieves the singleton instance of the {@code ChatHeadAPI}.
      *
      * @return the singleton instance of {@code ChatHeadAPI}.
-     * @throws IllegalArgumentException if {@code ChatHeadAPI} has not been initialized via {@link #initialize(JavaPlugin)}.
+     * @throws IllegalArgumentException if {@code ChatHeadAPI} has not been initialized via {@link #initialize(Main)}.
      */
     public static ChatHeadAPI getInstance() {
         if (instance == null) {
@@ -66,26 +66,26 @@ public class ChatHeadAPI {
     }
 
     /**
-     * Initializes the {@code ChatHeadAPI} with the provided {@link JavaPlugin} instance.
+     * Initializes the {@code ChatHeadAPI} with the provided {@link Main} instance.
      * <p>
      * This method reads the "skin-source" configuration from the plugin's configuration file,
      * sets the default skin source accordingly, and creates the singleton instance. If the API is
      * already initialized, an {@link IllegalStateException} is thrown.
      * </p>
      *
-     * @param plugin the {@link JavaPlugin} instance to associate with the {@code ChatHeadAPI}.
+     * @param plugin the {@link Main} instance to associate with the {@code ChatHeadAPI}.
      * @throws IllegalStateException if {@code ChatHeadAPI} has already been initialized.
      */
-    public static void initialize(JavaPlugin plugin) {
+    public static void initialize(Main plugin) {
         if (instance != null) {
             throw new IllegalStateException("PlayerHeadAPI has already been initialized.");
         }
 
         String skinSourceConfig = plugin.getConfig().getString("skin-source", "MOJANG");
         defaultSource = switch (skinSourceConfig.toUpperCase()) {
-            case "CRAFATAR" -> new CrafatarSource();
-            case "MINOTAR" -> new MinotarSource();
-            case "MCHEADS" -> new McHeadsSource();
+            case "CRAFATAR" -> new CrafatarSource(plugin.isOfflineModeEnabled());
+            case "MINOTAR" -> new MinotarSource(plugin.isOfflineModeEnabled());
+            case "MCHEADS" -> new McHeadsSource(plugin.isOfflineModeEnabled());
             default -> new MojangSource();
         };
 

@@ -18,10 +18,6 @@ public class Config {
         return plugin.getConfig().getBoolean("auto-download-pack", true);
     }
 
-    public boolean getServerOnlineMode() {
-        return plugin.getConfig().getBoolean("online-mode", true);
-    }
-
     public boolean getSkinOverlayEnabled() {
         return plugin.getConfig().getBoolean("enable-skin-overlay", true);
     }
@@ -51,7 +47,6 @@ public class Config {
         //default configuration:
         config.addDefault("skin-source", "MOJANG");
         config.addDefault("auto-download-pack", true);
-        config.addDefault("online-mode", true);
         config.addDefault("enable-skin-overlay", true);
         config.addDefault("enable-join-messages", true);
         config.addDefault("enable-leave-messages", true);

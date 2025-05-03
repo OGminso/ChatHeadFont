@@ -1,6 +1,7 @@
 package net.minso.chathead.API;
 
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.minso.chathead.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,9 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HeadCache {
 
     /**
-     * The {@link JavaPlugin} instance associated with this cache.
+     * The {@link Main} instance associated with this cache.
      */
-    private final JavaPlugin plugin;
+    private final Main plugin;
 
     /**
      * The expiration time for cache entries in milliseconds (5 minutes).
@@ -55,7 +56,7 @@ public class HeadCache {
      *
      * @param plugin the {@link JavaPlugin} instance associated with this cache.
      */
-    public HeadCache(JavaPlugin plugin) {
+    public HeadCache(Main plugin) {
         this.plugin = plugin;
         startCacheCleanupTask();
     }
