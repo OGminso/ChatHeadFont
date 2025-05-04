@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListener implements Listener {
@@ -25,6 +26,11 @@ public class PlayerListener implements Listener {
         if (!Bukkit.getServer().getOnlineMode() && plugin.getPluginConfig().getServerOnlineMode())
             Bukkit.getLogger().warning(" CHATHEAD - Server is currently in OFFLINE MODE! Change online-mode in the config!");
 
+    }
+
+    @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        ChatHeadAPI.getInstance().getHead(event.getPlayer());
     }
 
     @EventHandler
