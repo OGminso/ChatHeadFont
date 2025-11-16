@@ -221,3 +221,6 @@ Feel free to contribute to this project. Most pull requests are welcome, whether
 ## License and use
 This resource pack is available under the Creative Commons Attribution 4.0 International License (see LICENSE.txt). You are free to use, modify, and distribute this project as long as you include proper attribution.
 
+
+![bStats](https://bstats.org/signatures/bukkit/ChatHeadFont.svg)
+

@@ -10,6 +10,10 @@ public class Config {
         this.plugin = plugin;
     }
 
+    public boolean getCheckForUpdates() {
+        return plugin.getConfig().getBoolean("check-for-updates", true);
+    }
+
     public String getSkinSource() {
         return plugin.getConfig().getString("skin-source", "MOJANG");
     }
@@ -46,9 +50,14 @@ public class Config {
         return plugin.getConfig().getInt("join-messages-delay-seconds", 3);
     }
 
+    public int getHeadCacheEntryLifetimeSeconds() {
+        return plugin.getConfig().getInt("head-cache-entry-lifetime-seconds", 300);
+    }
+
     public void init() {
         FileConfiguration config = plugin.getConfig();
         //default configuration:
+        config.addDefault("check-for-updates", true);
         config.addDefault("skin-source", "MOJANG");
         config.addDefault("auto-download-pack", true);
         config.addDefault("online-mode", true);
@@ -58,6 +67,7 @@ public class Config {
         config.addDefault("enable-chat-messages", true);
         config.addDefault("enable-death-messages", true);
         config.addDefault("join-messages-delay-seconds", 3);
+        config.addDefault("head-cache-entry-lifetime-seconds", 300);
 
         config.options().copyDefaults(true);
         plugin.saveConfig();

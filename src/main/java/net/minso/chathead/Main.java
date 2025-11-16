@@ -5,8 +5,10 @@ import net.minso.chathead.Examples.ActionBarExample;
 import net.minso.chathead.Examples.BossbarExample;
 import net.minso.chathead.Examples.JoinLeaveChatExample;
 import net.minso.chathead.Hooks.PlaceholderAPIHook;
+import net.minso.chathead.Utils.UpdateChecker;
 import net.minso.chathead.config.Config;
 import net.minso.chathead.listener.PlayerListener;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +30,10 @@ public final class Main extends JavaPlugin {
 
         //Uncomment this to enable the examples!
         //registerExamples();
+
+        new UpdateChecker(this).checkForUpdates();
+
+        Metrics metrics = new Metrics(this, 27972);
     }
 
     private void registerExamples() {

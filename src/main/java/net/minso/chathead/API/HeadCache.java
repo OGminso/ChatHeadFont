@@ -3,6 +3,7 @@ package net.minso.chathead.API;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -29,8 +30,7 @@ public class HeadCache {
     /**
      * The expiration time for cache entries in milliseconds (5 minutes).
      */
-    private static final long CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes
-
+    private final long CACHE_EXPIRATION;
     /**
      * A map storing cached head representations, keyed by a unique combination of the player's UUID and overlay flag.
      */
@@ -57,6 +57,7 @@ public class HeadCache {
      */
     public HeadCache(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.CACHE_EXPIRATION = plugin.getConfig().getInt("head-cache-entry-lifetime-seconds", 300) * 1000L;
         startCacheCleanupTask();
     }
 
@@ -104,7 +105,7 @@ public class HeadCache {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 BaseComponent[] head = skinSource.getHead(player, overlay);
                 if (head != null && head.length > 0 && plugin.isEnabled()) {
-                    cache.put(cacheKey, new CachedHead(head, overlay, System.currentTimeMillis()));
+                    cache.put(cacheKey, new CachedHead(uuid, head, overlay, System.currentTimeMillis()));
                 }
                 pendingRequests.remove(cacheKey);
             });
@@ -115,12 +116,30 @@ public class HeadCache {
 
     /**
      * Determines whether the specified {@link CachedHead} entry has expired.
+     * <p>
+     * If the head is "time-expired" but the player is still online,
+     * the timestamp is refreshed and the entry is treated as NOT expired.
+     * </p>
      *
      * @param cachedHead the cached head entry to check.
-     * @return {@code true} if the cached head has expired; {@code false} otherwise.
+     * @return {@code true} if the cached head has expired, and the player is offline;
+     * {@code false} if it is still valid OR renewed for an online player.
      */
     private boolean isExpired(CachedHead cachedHead) {
-        return System.currentTimeMillis() - cachedHead.getTimestamp() > CACHE_EXPIRATION;
+        long headAge = System.currentTimeMillis() - cachedHead.getTimestamp();
+
+        // Checks if the Head is not expired.
+        if (headAge <= CACHE_EXPIRATION) return false;
+
+        // The Head is expired, Checks to see if the player is still online and renews the timestamp for the Head.
+        Player player = Bukkit.getPlayer(cachedHead.getUuid());
+        if (player != null && player.isOnline()) {
+            cachedHead.refreshTimestamp();
+            return false;
+        }
+
+        // Return true if the head is expired and the player isn't online.
+        return true;
     }
 
     /**
@@ -158,6 +177,12 @@ public class HeadCache {
      * </p>
      */
     private static class CachedHead {
+
+        /**
+         * The UUID of the player.
+         */
+        private final UUID uuid;
+
         /**
          * The head representation as an array of {@link BaseComponent}.
          */
@@ -171,19 +196,30 @@ public class HeadCache {
         /**
          * The timestamp (in milliseconds) when this head was cached.
          */
-        private final long timestamp;
+        private long timestamp;
 
         /**
          * Constructs a new {@code CachedHead} instance.
          *
+         * @param uuid      the UUID of the player.
          * @param head      the head representation as an array of {@link BaseComponent}.
          * @param overlay   {@code true} if the head was generated with an overlay; {@code false} otherwise.
          * @param timestamp the time at which the head was cached (in milliseconds).
          */
-        CachedHead(BaseComponent[] head, boolean overlay, long timestamp) {
+        CachedHead(UUID uuid, BaseComponent[] head, boolean overlay, long timestamp) {
+            this.uuid = uuid;
             this.head = head;
             this.overlay = overlay;
             this.timestamp = timestamp;
+        }
+
+        /**
+         * Retrieves the UUID when the head was cached.
+         *
+         * @return the player's UUID of the head stored.
+         */
+        public UUID getUuid() {
+            return uuid;
         }
 
         /**
@@ -211,6 +247,17 @@ public class HeadCache {
          */
         public long getTimestamp() {
             return timestamp;
+        }
+
+        /**
+         * Updates the cached entry's timestamp to the current time.
+         * <p>
+         * This effectively resets the entry's expiration timer, extending its
+         * lifetime in the cache. Used when a head is considered expired but
+         * the associated player is still online, preventing unnecessary cache removal.
+         */
+        public void refreshTimestamp() {
+            this.timestamp = System.currentTimeMillis();
         }
     }
 }

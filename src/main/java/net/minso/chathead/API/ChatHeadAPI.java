@@ -1,5 +1,7 @@
 package net.minso.chathead.API;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.minso.chathead.API.impl.CrafatarSource;
@@ -226,4 +228,12 @@ public class ChatHeadAPI {
     public String getHeadAsString(OfflinePlayer player) {
         return getHeadAsString(player, true, defaultSource);
     }
+
+
+    public Component getHeadAsComponent(UUID uuid, boolean overlay, SkinSource skinSource) {
+        LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.builder().build();
+        String legacyHead = getHeadAsString(uuid, overlay, skinSource);
+        return legacySerializer.deserialize(legacyHead);
+    }
+
 }
