@@ -114,6 +114,9 @@ enable-death-messages: true
 # This helps ensure that textures have loaded. Default is 3.
 join-messages-delay-seconds: 3
 
+# Expiry time per head in the HeadCache
+head-cache-entry-lifetime-seconds: 300
+
 ```
 ---
 
