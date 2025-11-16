@@ -22,10 +22,6 @@ public class PlayerListener implements Listener {
 
     public PlayerListener(Main plugin) {
         this.plugin = plugin;
-
-        if (!Bukkit.getServer().getOnlineMode() && plugin.getPluginConfig().getServerOnlineMode())
-            Bukkit.getLogger().warning(" CHATHEAD - Server is currently in OFFLINE MODE! Change online-mode in the config!");
-
     }
 
     @EventHandler
@@ -76,7 +72,7 @@ public class PlayerListener implements Listener {
     }
 
     private String insertPlayerHead(String message, Player player) {
-        SkinSource skinSource = plugin.getPluginConfig().getServerOnlineMode()
+        SkinSource skinSource = Bukkit.getServer().getOnlineMode()
                 ? ChatHeadAPI.defaultSource
                 : new MojangSource(false);
 

@@ -1,4 +1,4 @@
-# Chat Head Font v0.0.5
+# Chat Head Font v0.0.6
 
 Minecraft Resource Pack and API for creating dynamic player head chat icons.
 
@@ -86,14 +86,14 @@ Used to generate the player head icon and showcase them.
 After installation, a `config.yml` is created in your server’s plugin folder with the following default options:
 
 ```yml
+# Whether to check for new updates from GitHub.
+check-for-updates: true
+
 # Which skin source to use (MOJANG, CRAFATAR, MINOTAR, or MCHEADS). Default is MOJANG.
 skin-source: MOJANG
 
 # Whether the resource pack will be automatically downloaded and applied for every player.
 auto-download-pack: true
-
-# Should the server be treated as running in online mode.
-online-mode: true
 
 # Whether to display the player head with its hat overlay.
 enable-skin-overlay: true
